@@ -1,0 +1,113 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        white: {
+          DEFAULT: '#ffffff',
+          4:   'rgba(255, 255, 255, 0.04)',
+          6:   'rgba(255, 255, 255, 0.06)',
+          8:  'rgba(255, 255, 255, 0.08)',
+          10: 'rgba(255, 255, 255, 0.1)',
+          12: 'rgba(255, 255, 255, 0.12)',
+          16: 'rgba(255, 255, 255, 0.16)',
+          20: 'rgba(255, 255, 255, 0.2)',
+          30: 'rgba(255, 255, 255, 0.3)',
+          40: 'rgba(255, 255, 255, 0.4)',
+          50: 'rgba(255, 255, 255, 0.5)',
+          60: 'rgba(255, 255, 255, 0.6)',
+        },
+        // Dark grey design system
+        surface: {
+          50:  '#f4f4f5',
+          100: '#e4e4e7',
+          200: '#d4d4d8',
+          300: '#a1a1aa',
+          400: '#71717a',
+          500: '#52525b',
+          600: '#3f3f46',
+          700: '#27272a',
+          800: '#1c1c1f',
+          900: '#121214',
+          950: '#09090b',
+        },
+        accent: {
+          DEFAULT: '#e8ff47',
+          hover:   '#d4eb2e',
+          muted:   '#c8d943',
+          dim:     '#b3c236',
+          8:       'rgba(232, 255, 71, 0.08)',
+          10:      'rgba(232, 255, 71, 0.1)',
+          12:      'rgba(232, 255, 71, 0.12)',
+          20:      'rgba(232, 255, 71, 0.2)',
+          30:      'rgba(232, 255, 71, 0.3)',
+          60:      'rgba(232, 255, 71, 0.6)',
+        },
+        cyan: {
+          accent: '#00e5ff',
+          dim:    '#00b8cc',
+        },
+        danger: {
+          DEFAULT: '#ff4444',
+          muted:   '#cc3333',
+          10:      'rgba(255, 68, 68, 0.1)',
+          20:      'rgba(255, 68, 68, 0.2)',
+          30:      'rgba(255, 68, 68, 0.3)',
+        },
+        success: {
+          DEFAULT: '#22c55e',
+          muted:   '#16a34a',
+          10:      'rgba(34, 197, 94, 0.1)',
+          20:      'rgba(34, 197, 94, 0.2)',
+        },
+        warning: {
+          DEFAULT: '#f59e0b',
+          muted:   '#d97706',
+          10:      'rgba(245, 158, 11, 0.1)',
+          20:      'rgba(245, 158, 11, 0.2)',
+        },
+      },
+      fontFamily: {
+        display: ['"Syne"', 'sans-serif'],
+        body:    ['"DM Sans"', 'sans-serif'],
+        mono:    ['"JetBrains Mono"', 'monospace'],
+      },
+      backgroundImage: {
+        'noise': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E\")",
+        'grid-dark': "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+      },
+      backgroundSize: {
+        'grid': '40px 40px',
+      },
+      animation: {
+        'fade-in':      'fadeIn 0.4s ease-out',
+        'slide-up':     'slideUp 0.4s ease-out',
+        'slide-in':     'slideIn 0.3s ease-out',
+        'pulse-accent': 'pulseAccent 2s infinite',
+        'shimmer':      'shimmer 1.5s infinite',
+        'spin-slow':    'spin 3s linear infinite',
+      },
+      keyframes: {
+        fadeIn:      { from: { opacity: '0' }, to: { opacity: '1' } },
+        slideUp:     { from: { transform: 'translateY(16px)', opacity: '0' }, to: { transform: 'translateY(0)', opacity: '1' } },
+        slideIn:     { from: { transform: 'translateX(-16px)', opacity: '0' }, to: { transform: 'translateX(0)', opacity: '1' } },
+        pulseAccent: { '0%,100%': { boxShadow: '0 0 0 0 rgba(232,255,71,0.3)' }, '50%': { boxShadow: '0 0 0 8px rgba(232,255,71,0)' } },
+        shimmer:     { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+      },
+      boxShadow: {
+        'glow-accent': '0 0 20px rgba(232,255,71,0.2)',
+        'glow-cyan':   '0 0 20px rgba(0,229,255,0.2)',
+        'card':        '0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.6)',
+        'card-hover':  '0 4px 12px rgba(0,0,0,0.5)',
+        'modal':       '0 20px 60px rgba(0,0,0,0.8)',
+      },
+      borderRadius: {
+        'xl2': '1rem',
+        'xl3': '1.5rem',
+      },
+    },
+  },
+  plugins: [],
+}
