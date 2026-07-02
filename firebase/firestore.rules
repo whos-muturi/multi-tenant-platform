@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helper functions ──────────────────────────────────────
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(clientId) {
+      return isAuthenticated() && request.auth.uid == clientId;
+    }
+
+    function isAdmin() {
+      // Check if user exists in admins collection
+      return isAuthenticated() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isValidBooking() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['clientId', 'serviceName', 'customerName', 'customerEmail', 'customerPhone', 'date', 'time', 'paymentMethod', 'paymentRef'])
+          && data.servicePrice is number
+          && data.servicePrice > 0
+          && data.customerEmail.matches('.*@.*\\..*');
+    }
+
+    // ── Clients ───────────────────────────────────────────────
+
+    match /clients/{clientId} {
+      // Anyone can read a client's public profile (for the booking page)
+      allow read: if true;
+
+      // Only the client themselves (or admin) can write
+      allow create: if isOwner(clientId);
+      allow update: if isOwner(clientId) || isAdmin();
+      allow delete: if isAdmin();
+    // ── Admins ───────────────────────────────────────────────
+
+    match /admins/{adminId} {
+      // Only admins can manage admin list
+      allow read, write: if isAdmin();
+    }
+
+    // ── Bookings ──────────────────────────────────────────────
+
+    match /bookings/{bookingId} {
+      // Client can read their own bookings; admin reads all
+      allow read: if isAuthenticated() &&
+                     (request.auth.uid == resource.data.clientId || isAdmin());
+
+      // Anyone (even unauthenticated) can create a booking,
+      // but only after the payment fields are populated
+      allow create: if isValidBooking();
+
+      // Only the client or admin can update booking status
+      allow update: if isAuthenticated() &&
+                       (request.auth.uid == resource.data.clientId || isAdmin()) &&
+                       request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['status', 'updatedAt']);
+
+      // Only admin can delete bookings
+      allow delete: if isAdmin();
+    // ── M-Pesa Callbacks ───────────────────────────────────────
+
+    match /mpesa_callbacks/{callbackId} {
+      // Backend only (Admin SDK bypasses rules)
+      allow read, write: if false;
+    }
+
+    // ── Deny all other collections ────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
